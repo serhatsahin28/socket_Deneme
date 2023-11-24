@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
     console.log('İstemciden gelen mesaj:', data);
     io.emit('messageFromServer', data);
   });
-}); F
+}); 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Sunucu çalışıyor: http://localhost:${PORT}`);

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Socket.IO Example</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body {
+
+            margin-left: 35em;
+            margin-top: 10em;
+
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Socket.IO Example</h1>
+    <input type="text" id="User" placeholder="Kullanıcı adınızı yazın"><br><br>
+    <input type="text" id="messageInput" placeholder="Mesajınızı yazın"> <br><br>
+    <button onclick="sendMessage()">Mesaj Gönder</button>
+
+    <ul id="messages">
+        <% aa.forEach((a)=> { %>
+            <li>
+                <%= a.text %>
+
+            </li>
+            <p style="margin-top: 0;"> Kullanıcı: <%= a.sender %>
+            </p>
+            <br>
+            <% }) %>
+
+    </ul>
+
+    <script>
+        const socket = io();
+
+        function sendMessage() {
+            //
+            const message = document.getElementById('messageInput').value;
+            const user = document.getElementById('User').value;
+
+            socket.emit('messageFromClient', { message, user });
+            document.getElementById('messageInput').value = '';
+            document.getElementById('User').value = '';
+
+        }
+
+        socket.on('messageFromServer', (data) => {
+
+            const message = document.getElementById("messages");
+            const li = document.createElement("li");
+            const p1User = document.createElement("p1");
+
+            li.textContent = data.message;
+            p1User.textContent = "Kullanıcı: " + data.user;
+
+            if (data.message != "" && data.user != "") {
+                message.appendChild(li);
+                message.appendChild(p1User);
+
+            }
+
+        });
+
+
+
+
+        const messageContainer = document.getElementById('messages');
+
+        aa.forEach(item => {
+            console.log(aa);
+        });
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

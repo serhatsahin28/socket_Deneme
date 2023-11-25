@@ -9,72 +9,111 @@
         body {
 
             margin-left: 35em;
-            margin-top: 10em;
+            margin-top: 2rem;
+            background-color: aqua;
 
+        }
+
+
+
+
+
+        .form {
+            margin-top: 25px;
+            position: fixed;
+            top: 32rem;
+            left: 20rem;
+
+        }
+
+        .form>input {
+
+            height: 55px;
+            width: 50rem;
+
+        }
+
+        .form>button {
+            height: 50px;
+
+        }
+
+        hr {
+            width: 500vh;
+            margin-left: -100vh;
         }
     </style>
 </head>
 
 <body>
     <h1>Socket.IO Example</h1>
-    <input type="text" id="User" placeholder="Kullanıcı adınızı yazın"><br><br>
-    <input type="text" id="messageInput" placeholder="Mesajınızı yazın"> <br><br>
-    <button onclick="sendMessage()">Mesaj Gönder</button>
 
-    <ul id="messages">
-        <%aa.forEach((a)=> { %>
-            <li>
-                <%= a.text %>
+    <div class="card">
+        <ul id="messages">
+            <hr>
+            <%aa.forEach((a)=> { %>
+                <li>
+                    <%= a.text %>
 
-            </li>
-            <p style="margin-top: 0;"> Kullanıcı: <%= a.sender %>
-            </p>
-            <br>
-            <% }) %>
+                </li>
 
-    </ul>
+                <p> "<%= a.sender %>" Tarafından gönderildi</p>
+                <hr>
 
+                <% }) %>
+                    <br><br><br><br><br>
+
+        </ul>
+
+    </div>
+    <div class="form">
+        <input type="text" id="messageInput" placeholder="Mesajınızı yazın">
+        <button onclick="sendMessage()">Mesaj Gönder</button>
+
+    </div>
     <script>
         const socket = io();
 
         function sendMessage() {
             //
             const message = document.getElementById('messageInput').value;
-            const user = document.getElementById('User').value;
 
-            socket.emit('messageFromClient', { message, user });
+            socket.emit('messageFromClient', { message });
             document.getElementById('messageInput').value = '';
-            document.getElementById('User').value = '';
 
         }
+
 
         socket.on('messageFromServer', (data) => {
 
             const message = document.getElementById("messages");
             const li = document.createElement("li");
-            const p1User = document.createElement("p1");
 
             li.textContent = data.message;
-            p1User.textContent = "Kullanıcı: " + data.user;
 
-            if (data.message != "" && data.user != "") {
+            if (data.message != "") {
                 message.appendChild(li);
-                message.appendChild(p1User);
-
             }
 
+        });
+
+
+        message.addEventListener('keypress', () => {
+            socket.emit("typing", data.user);
+
+        })
+
+
+
+        socket.on('typing', data => {
+            feedback.innerHTML = '<p>' + data.user + 'yazıyor...'
         });
 
 
 
 
         const messageContainer = document.getElementById('messages');
-
-        aa.forEach(item => {
-            console.log(aa);
-        });
-
-
+        const message = document.getElementById('messages');
 
 
 

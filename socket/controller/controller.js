@@ -9,30 +9,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const LoginControl = (req, res) => {
 
-    db.query("SELECT * FROM users", (error, result) => {
+  db.query("SELECT * FROM users", (error, result) => {
 
-        if (error) throw error;
-    
-    
-        const username = req.body.name;
-        const userpassword = req.body.password;
-    
-        result.forEach(element => {
-    
-    
-          if (username == element.username && userpassword == element.password) {
-            session.username = username;
-            session.password = userpassword;
-    
-    
-            return res.redirect("/anasayfa");
-    
-          }
-    
-        });
-        res.render("login");
-    
-    
-      }); 
+    if (error) throw error;
+
+
+    const username = req.body.name;
+    const userpassword = req.body.password;
+
+    result.forEach(element => {
+
+
+      if (username == element.username && userpassword == element.password) {
+        session.username = username;
+        session.password = userpassword;
+
+        return res.redirect("/anasayfa");
+
+      }
+
+    });
+    res.render("login");
+
+
+  });
 }
 module.exports = { LoginControl };

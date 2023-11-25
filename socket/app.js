@@ -32,6 +32,8 @@ app.get("/anasayfa", (req, res) => {
 
 });
 
+
+
 app.get("/", (req, res) => {
 
   res.render("login");
@@ -40,10 +42,7 @@ app.get("/", (req, res) => {
 
 
 app.post("/login", controller.LoginControl);
-// app.post("/login", (req, res) => {
- 
 
-// });
 
 
 io.on('connection', (socket) => {
@@ -51,6 +50,9 @@ io.on('connection', (socket) => {
   console.log(session);
   socket.on('disconnect', () => {
     console.log('Bir istemci ayrıldı');
+
+
+
   });
 
   socket.on('messageFromClient', (data) => {
@@ -77,13 +79,12 @@ io.on('connection', (socket) => {
     console.log('İstemciden gelen mesaj:', data);
     io.emit('messageFromServer', data);
   });
-<<<<<<< Updated upstream
-}); 
-=======
+
+
+
 });
 
 
->>>>>>> Stashed changes
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Sunucu çalışıyor: http://localhost:${PORT}`);

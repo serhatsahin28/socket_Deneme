@@ -41,7 +41,12 @@ app.get("/", (req, res) => {
 });
 
 
+
+
 app.post("/login", controller.LoginControl);
+
+
+app.get("/logout",controller.Logout);
 
 
 
@@ -58,21 +63,28 @@ io.on('connection', (socket) => {
   socket.on('messageFromClient', (data) => {
 
     const message = data.message;
-    const user = session.username;
+    const username = data.username;
 
-    if (message != "" && user != "") {
-      db.query("INSERT INTO messages (text,sender) VALUES (?,?)", [message, user], (err) => {
-        if (err) throw err;
-        console.log("veri eklendi");
+      if (message != "" && username != "") {
+        db.query("INSERT INTO messages (text,sender) VALUES (?,?)", [message, username], (err) => {
+          if (err) throw err;
+          console.log("veri eklendi");
 
 
-      });
+        });
 
-    }
-    console.log("Boş mesaj gönderilemez");
+      }
+      console.log("Boş mesaj gönderilemez");
+
+
+
+
+
 
 
   });
+
+
 
 
   socket.on('messageFromClient', (data) => {

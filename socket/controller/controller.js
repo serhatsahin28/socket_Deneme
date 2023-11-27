@@ -7,31 +7,54 @@ const db = require("../model/db");
 app.use(express.static(__dirname + '/views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+
 const LoginControl = (req, res) => {
+  const username = req.body.name;
+  const userpassword = req.body.password;
 
   db.query("SELECT * FROM users", (error, result) => {
+    var is = false;
 
     if (error) throw error;
 
-
-    const username = req.body.name;
-    const userpassword = req.body.password;
-
     result.forEach(element => {
-
-
-      if (username == element.username && userpassword == element.password) {
-        session.username = username;
-        session.password = userpassword;
-
-        return res.redirect("/anasayfa");
-
+      if (element.username == username && element.password == userpassword) {
+        is = true;
+        session.user = { username, userpassword };
       }
-
     });
-    res.render("login");
 
+    if (is) {
+      db.query("SELECT * FROM messages", (error, result) => {
+        if (error) {
+          console.error(err);
+        }
 
+        var sessionUser = session.user.username;
+        return res.render("index", { aa: result, session: sessionUser });
+      });
+    } else {
+      return res.render("login");
+    }
   });
+};
+
+
+
+
+
+
+const Logout = (req, res) => {
+
+  req.session.destroy();
+
+  res.render("login");
+
+
 }
-module.exports = { LoginControl };
+
+
+
+
+module.exports = { LoginControl, Logout };
